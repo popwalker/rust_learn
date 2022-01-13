@@ -6,7 +6,7 @@ use std::{collections::HashMap, str::FromStr};
 use mime::Mime;
 use syntect::{
     easy::HighlightLines,
-    highlighting::{ThemeSet},
+    highlighting::ThemeSet,
     parsing::SyntaxSet,
     util::{as_24_bit_terminal_escaped, LinesWithEndings},
 };
