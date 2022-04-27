@@ -1,0 +1,20 @@
+[package]
+name = "queryer-js"
+version = "0.1.0"
+edition = "2021"
+exclude = ["index.node"]
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+crate-type = ["cdylib"]
+
+
+[dependencies]
+anyhow = "1"
+queryer = {path = "../queryer"}
+tokio = {version="1", features = ["full"]}
+
+[dependencies.neon]
+version = "0.10.0"
+default-fetures =  false
+fetures = ["napi-6"]
