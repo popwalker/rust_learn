@@ -1,0 +1,42 @@
+[package]
+name = "traits"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[[bin]]
+name = "write"
+path = "src/write.rs"
+
+[[bin]]
+name = "parse"
+path = "src/parse.rs"
+
+[[bin]]
+name = "parse1"
+path = "src/parse1.rs"
+
+[[bin]]
+name = "parse2"
+path = "src/parse2.rs"
+
+[[bin]]
+name = "complex"
+path = "src/complex.rs"
+
+[[bin]]
+name = "animal"
+path = "src/animal.rs"
+
+[[bin]]
+name = "formatter"
+path = "src/formatter.rs"
+
+[[bin]]
+name = "iterator"
+path = "src/iterator.rs"
+
+
+[dependencies]
+regex = "1.5"
