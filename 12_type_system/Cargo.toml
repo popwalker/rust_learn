@@ -1,0 +1,21 @@
+[package]
+name = "type_system"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[[bin]]
+name = "writer1"
+path = "src/writer1.rs"
+
+[[bin]]
+name = "writer2"
+path = "src/writer2.rs"
+
+[[bin]]
+name = "writer3"
+path = "src/writer3.rs"
+
+
+[dependencies]
