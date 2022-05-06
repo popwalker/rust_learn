@@ -1,0 +1,17 @@
+[package]
+name = "data_structure"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[[bin]]
+name = "slice1"
+path = "src/slice1.rs"
+
+[[bin]]
+name = "iter_ext"
+path = "src/iter_ext.rs"
+
+[dependencies]
+itertools = "0.10"
