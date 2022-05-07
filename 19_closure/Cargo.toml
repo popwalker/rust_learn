@@ -1,0 +1,20 @@
+[package]
+name = "closure"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[[bin]]
+name = "closure"
+path = "src/closure.rs"
+
+[[bin]]
+name = "fnmut"
+path = "src/fnmut.rs"
+
+[[bin]]
+name = "fn"
+path = "src/fn.rs"
+
+[dependencies]
