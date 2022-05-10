@@ -4,10 +4,11 @@ pub fn example_sql(mut cx:FunctionContext) -> JsResult<JsString> {
     Ok(cx.string(queryer::example_sql()))
 }
 
+#[allow(dead_code)]
 fn query(mut cx: FunctionContext) -> JsResult<JsString>{
-    let sql = cx.argument::<JsString>(0)?.value(&mut cx);
+    let sql = cx.argument::<JsString>(0)?.value();
     let output = match cx.argument::<JsString>(1) {
-        Ok(v) => v.value(&mut cx),
+        Ok(v) => v.value(),
         Err(_) => "csv".to_string(),
     };
     let rt = tokio::runtime::Runtime::new().unwrap();
@@ -19,7 +20,8 @@ fn query(mut cx: FunctionContext) -> JsResult<JsString>{
     }
 }
 
-#[neon::main]
+// #[neon::main]
+#[allow(dead_code)]
 fn main(mut cx: ModuleContext) -> NeonResult<()> {
     cx.export_function("example_sql", example_sql)?;
     cx.export_function("query", query)?;

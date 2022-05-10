@@ -1,7 +1,7 @@
 use lazy_static::lazy_static;
 use std::borrow::Cow;
 use std::collections::HashMap;
-use std::hash::Hash;
+// use std::hash::Hash;
 use std::sync::{Arc, Mutex};
 use std::thread;
 use std::time::Duration;

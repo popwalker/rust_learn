@@ -21,6 +21,6 @@ impl<W: Write> MyWriter<W> {
 }
 
 fn main() {
-    let writer = MyWriter::new("127.0.0.1:8080")
+    let writer = MyWriter::new("127.0.0.1:8080");
     writer.write("hello world");
 }

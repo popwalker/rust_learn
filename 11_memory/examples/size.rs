@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::mem::size_of;
 
-
+#[allow(dead_code)]
 enum E {
     A(f64),
     B(HashMap<String, String>),
@@ -9,9 +9,9 @@ enum E {
 }
 
 macro_rules! show_size {
-    (handler) => {
+    (header) => {
         println!(
-            "{:<24} {:>4}   {}  {}",
+            "{:<24} {:>4}    {}    {}",
             "Type", "T", "Option<T>", "Result<T, io::Error>"
         );
         println!("{}", "-".repeat(64));
@@ -19,12 +19,12 @@ macro_rules! show_size {
     ($t:ty) => {
         println!(
             "{:<24} {:4} {:8} {:12}",
-            stringify($t),
+            stringify!($t),
             size_of::<$t>(),
             size_of::<Option<$t>>(),
             size_of::<Result<$t, std::io::Error>>(),
-        );
-    }
+        )
+    };
 }
 
 fn main() {

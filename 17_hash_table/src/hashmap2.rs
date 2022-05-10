@@ -1,11 +1,12 @@
 use std::collections::HashMap;
 
+
 fn main(){
     let map = HashMap::new();
     let mut map = explain("empty", map);
 
     map.insert('a', 1);
-    let mut map = explain("added 1", map);
+    let _map = explain("added 1", map);
 }
 
 fn explain<K, V>(name: &str, map: HashMap<K, V>) -> HashMap<K, V> {
