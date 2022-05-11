@@ -5,7 +5,7 @@ use rayon::iter::{IntoParallelIterator, ParallelIterator};
 use regex::Regex;
 use std::{
     fs::File,
-    io::{self, BufRead, BufReader, Read, Stdout, Write},
+    io::{self, BufRead, BufReader, Write},
     ops::Range,
     path::Path,
 };
@@ -14,7 +14,7 @@ mod error;
 pub use error::GrepError;
 
 // 定义类型，简化书写
-pub type StrategyFn<W, R> = fn(&Path, BufReader<R>, &Regex, &mut W) -> Result<(), GrepError>;
+pub type StrategyFn = fn(&Path, &mut dyn BufRead, &Regex, &mut dyn Write) -> Result<(), GrepError>;
 
 #[derive(Parser, Debug)]
 #[clap(version = "1.0", author = "rick")]
@@ -28,16 +28,16 @@ impl GrepConfig {
         self.match_with(default_strategy)
     }
 
-    pub fn match_with(&self, strategy: StrategyFn<Stdout, File>) -> Result<(), GrepError> {
+    pub fn match_with(&self, strategy: StrategyFn) -> Result<(), GrepError> {
         let regex = Regex::new(&self.pattern)?;
         let files: Vec<_> = glob::glob(&self.glob)?.collect();
         files.into_par_iter().for_each(|v| {
             if let Ok(filename) = v {
                 if let Ok(file) = File::open(&filename) {
-                    let reader = BufReader::new(file);
+                    let mut reader = BufReader::new(file);
                     let mut stdout = io::stdout();
                     
-                    if let Err(e) = strategy(filename.as_path(), reader, &regex, &mut stdout) {
+                    if let Err(e) = strategy(filename.as_path(), &mut reader, &regex, &mut stdout) {
                         println!("Interal error: {:?}", e);
                     }
                 }
@@ -47,7 +47,7 @@ impl GrepConfig {
     }
 }
 
-pub fn default_strategy<W: Write, R: Read> (path: &Path, reader: BufReader<R>, pattern: &Regex, writer: &mut W) -> Result<(), GrepError>{
+pub fn default_strategy (path: &Path, reader: &mut dyn BufRead, pattern: &Regex, writer: &mut dyn Write) -> Result<(), GrepError>{
     let matches: String = reader.lines().enumerate().map(|(lineno, line)| {
         line.ok().map(|line| {
             pattern.find(&line).map(|m| format_line(&line, lineno + 1, m.range()))
@@ -91,7 +91,7 @@ mod tests {
     fn default_strategy_should_work() {
         let path = Path::new("src/main.rs");
         let input = b"hello world!\nhey Tyr!";
-        let reader = BufReader::new(&input[..]);
+        let mut reader = BufReader::new(&input[..]);
         let pattern = Regex::new(r"he\\w+").unwrap();
         let mut writer = Vec::new();
         default_strategy(path, reader, &pattern,&mut writer);
