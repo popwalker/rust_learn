@@ -1,0 +1,18 @@
+[package]
+name = "xunmi_py"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+name = "xunmi"
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = { version="0.14", features = ["extension-module"] }
+serde_json = "1"
+xumni = "0.2"
+
+[build-dependencies]
+pyo3-build-config = "0.14"
