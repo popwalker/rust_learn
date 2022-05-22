@@ -28,7 +28,7 @@ impl Storage for MemTable {
         let table = self.get_or_create_table(table);
         Ok(table.get(key).map(|v| v.value().clone()))
     }
-    
+
     fn set(&self, table: &str, key: String, value: Value) -> Result<Option<Value>, KvError> {
         let table = self.get_or_create_table(table);
         Ok(table.insert(key, value))
@@ -43,16 +43,12 @@ impl Storage for MemTable {
     }
     fn get_all(&self, table: &str) -> Result<Vec<crate::Kvpair>, KvError> {
         let table = self.get_or_create_table(table);
-        Ok(
-            table
+        Ok(table
             .iter()
             .map(|v| Kvpair::new(v.key(), v.value().clone()))
-            .collect()
-        )
+            .collect())
     }
     fn get_iter(&self, table: &str) -> Result<Box<dyn Iterator<Item = Kvpair>>, KvError> {
         todo!()
     }
-    
 }
-

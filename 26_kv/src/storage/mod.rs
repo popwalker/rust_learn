@@ -22,27 +22,30 @@ pub trait Storage {
 }
 
 pub struct StorageIter<T> {
-    data: T
+    data: T,
 }
 
 impl<T> StorageIter<T> {
     pub fn new(data: T) -> Self {
-        Self {data}
+        Self { data }
     }
 }
 
-impl<T> Iterator for StorageIter<T> where T: Iterator, T::Item: Into<Kvpair> {
+impl<T> Iterator for StorageIter<T>
+where
+    T: Iterator,
+    T::Item: Into<Kvpair>,
+{
     type Item = Kvpair;
     fn next(&mut self) -> Option<Self::Item> {
         self.data.next().map(|v| v.into())
     }
 }
 
-
 #[cfg(test)]
 mod tests {
-    use tempfile::tempdir;
     use super::*;
+    use tempfile::tempdir;
 
     #[test]
     fn memtable_basic_interface_should_work() {
@@ -121,14 +124,14 @@ mod tests {
     }
 
     #[test]
-    fn sleddb_get_all_should_work(){
+    fn sleddb_get_all_should_work() {
         let dir = tempdir().unwrap();
         let store = SledDb::new(dir);
         test_get_all(store);
     }
 
     #[test]
-    fn sleddb_iter_should_work(){
+    fn sleddb_iter_should_work() {
         let dir = tempdir().unwrap();
         let store = SledDb::new(dir);
         test_get_iter(store);

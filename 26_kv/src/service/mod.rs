@@ -41,17 +41,18 @@ impl<Store: Storage> Service<Store> {
         if !self.inner.on_before_send.is_empty() {
             debug!("Modified response: {:?}", res);
         }
-        
+
         res
     }
 }
 
 impl<Store: Storage> From<ServiceInner<Store>> for Service<Store> {
     fn from(inner: ServiceInner<Store>) -> Self {
-        Self { inner: Arc::new(inner) }
+        Self {
+            inner: Arc::new(inner),
+        }
     }
 }
-
 
 pub struct ServiceInner<Store> {
     store: Store,
@@ -158,7 +159,7 @@ mod tests {
     }
 
     #[test]
-    fn event_registeration_should_work(){
+    fn event_registeration_should_work() {
         fn b(cmd: &CommandRequest) {
             info!("Got {:?}", cmd);
         }
@@ -173,13 +174,13 @@ mod tests {
         }
 
         let service: Service = ServiceInner::new(MemTable::default())
-            .fn_received(|_:&CommandRequest| {})
+            .fn_received(|_: &CommandRequest| {})
             .fn_received(b)
             .fn_executed(c)
             .fn_before_send(d)
             .fn_after_send(e)
             .into();
-        
+
         let res = service.execute(CommandRequest::new_hset("t1", "k1", "v1".into()));
         assert_eq!(res.status, StatusCode::CREATED.as_u16() as _);
         assert_eq!(res.message, "");

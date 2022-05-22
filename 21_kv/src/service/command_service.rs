@@ -1,6 +1,5 @@
 use crate::*;
 
-
 impl CommandService for Hget {
     fn execute(self, store: &impl Storage) -> CommandResponse {
         match store.get(&self.table, &self.key) {
@@ -32,7 +31,6 @@ impl CommandService for Hset {
         }
     }
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -85,7 +83,7 @@ mod tests {
         let pairs = &[
             Kvpair::new("u1", 6.into()),
             Kvpair::new("u2", 8.into()),
-            Kvpair::new("u3",11.into()),
+            Kvpair::new("u3", 11.into()),
         ];
         assert_res_ok(res, &[], pairs);
     }
@@ -100,7 +98,7 @@ mod tests {
     }
 
     fn assert_res_ok(mut res: CommandResponse, values: &[Value], pairs: &[Kvpair]) {
-        res.pairs.sort_by(|a,b| a.partial_cmp(b).unwrap());
+        res.pairs.sort_by(|a, b| a.partial_cmp(b).unwrap());
         assert_eq!(res.status, 200);
         assert_eq!(res.message, "");
         assert_eq!(res.values, values);

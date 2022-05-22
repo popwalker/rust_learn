@@ -1,6 +1,6 @@
+use crate::{KvError, Kvpair, Storage, StorageIter, Value};
 use sled::{Db, IVec};
 use std::{convert::TryInto, path::Path, str};
-use crate::{KvError, Kvpair, Storage, StorageIter, Value};
 
 #[derive(Debug)]
 pub struct SledDb(Db);
@@ -25,7 +25,7 @@ fn flip<T, E>(x: Option<Result<T, E>>) -> Result<Option<T>, E> {
 }
 
 impl Storage for SledDb {
-    fn get(&self, table: &str, key:&str) -> Result<Option<Value>,KvError> {
+    fn get(&self, table: &str, key: &str) -> Result<Option<Value>, KvError> {
         let name = SledDb::get_full_key(table, key);
         let result = self.0.get(name.as_bytes())?.map(|v| v.as_ref().try_into());
         flip(result)
@@ -63,7 +63,7 @@ impl Storage for SledDb {
 impl From<Result<(IVec, IVec), sled::Error>> for Kvpair {
     fn from(v: Result<(IVec, IVec), sled::Error>) -> Self {
         match v {
-            Ok((k,v)) => match v.as_ref().try_into() {
+            Ok((k, v)) => match v.as_ref().try_into() {
                 Ok(v) => Kvpair::new(ivec_to_key(k.as_ref()), v),
                 Err(_) => Kvpair::default(),
             },
@@ -76,11 +76,10 @@ impl From<sled::Error> for KvError {
     fn from(e: sled::Error) -> Self {
         match e {
             // sled::Error::CollectionNotFound(v) => KvError::NotFound(v.into(), v.into()).into(),
-            _ => KvError::Internal("internal err".into())
+            _ => KvError::Internal("internal err".into()),
         }
     }
 }
-
 
 fn ivec_to_key(ivec: &[u8]) -> &str {
     let s = str::from_utf8(ivec).unwrap();

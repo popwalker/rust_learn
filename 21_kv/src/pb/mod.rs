@@ -9,7 +9,7 @@ impl CommandRequest {
     // 创建HSET命令
     pub fn new_hset(table: impl Into<String>, key: impl Into<String>, value: Value) -> Self {
         Self {
-            request_data: Some(RequestData::Hset(Hset{
+            request_data: Some(RequestData::Hset(Hset {
                 table: table.into(),
                 pair: Some(Kvpair::new(key, value)),
             })),
@@ -18,19 +18,19 @@ impl CommandRequest {
 
     // 创建hget命令
     pub fn new_hget(table: impl Into<String>, key: impl Into<String>) -> Self {
-        Self { 
-            request_data: Some(RequestData::Hget(Hget{
+        Self {
+            request_data: Some(RequestData::Hget(Hget {
                 table: table.into(),
                 key: key.into(),
-            })) 
+            })),
         }
     }
 
     pub fn new_hgetall(table: impl Into<String>) -> Self {
-        Self { 
-            request_data: Some(RequestData::Hgetall(Hgetall{
+        Self {
+            request_data: Some(RequestData::Hgetall(Hgetall {
                 table: table.into(),
-            }))
+            })),
         }
     }
 }
@@ -39,7 +39,7 @@ impl Kvpair {
     pub fn new(key: impl Into<String>, value: Value) -> Self {
         Self {
             key: key.into(),
-            value:Some(value),
+            value: Some(value),
         }
     }
 }
@@ -62,17 +62,17 @@ impl From<&str> for Value {
 
 impl From<i64> for Value {
     fn from(v: i64) -> Self {
-        Self { 
-            value: Some(value::Value::Integer(v)) 
+        Self {
+            value: Some(value::Value::Integer(v)),
         }
     }
 }
 
 impl From<Value> for CommandResponse {
     fn from(v: Value) -> Self {
-        Self { 
-            status: StatusCode::OK.as_u16() as _, 
-            values: vec![v], 
+        Self {
+            status: StatusCode::OK.as_u16() as _,
+            values: vec![v],
             ..Default::default()
         }
     }
@@ -90,12 +90,11 @@ impl From<KvError> for CommandResponse {
         match e {
             KvError::NotFound(_, _) => result.status = StatusCode::NOT_FOUND.as_u16() as _,
             KvError::InvalidCommand(_) => result.status = StatusCode::BAD_REQUEST.as_u16() as _,
-            _ => {},
+            _ => {}
         }
-       result
+        result
     }
 }
-
 
 impl From<Vec<Kvpair>> for CommandResponse {
     fn from(pairs: Vec<Kvpair>) -> Self {

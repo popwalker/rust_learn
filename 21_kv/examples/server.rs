@@ -12,12 +12,13 @@ async fn main() -> Result<()> {
     let addr = "127.0.0.1:9527";
     let listener = TcpListener::bind(addr).await?;
     info!("Start listening on {}", addr);
-    loop{
+    loop {
         let (stream, addr) = listener.accept().await?;
         info!("Client {:?} connected", addr);
         let svc = service.clone();
         tokio::spawn(async move {
-            let mut stream = AsyncProstStream::<_, CommandRequest, CommandResponse, _>::from(stream).for_async();
+            let mut stream =
+                AsyncProstStream::<_, CommandRequest, CommandResponse, _>::from(stream).for_async();
             while let Some(Ok(msg)) = stream.next().await {
                 let res = svc.execute(msg);
                 stream.send(res).await.unwrap();

@@ -94,7 +94,7 @@ mod tests {
         let mut reader = BufReader::new(&input[..]);
         let pattern = Regex::new(r"he\\w+").unwrap();
         let mut writer = Vec::new();
-        default_strategy(path, reader, &pattern,&mut writer);
+        default_strategy(path, &mut reader, &pattern,&mut writer);
         let result = String::from_utf8(writer).unwrap();
         let expected = [
             String::from("src/main.rs"),

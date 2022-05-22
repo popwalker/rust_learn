@@ -1,10 +1,10 @@
 pub mod abi;
 
+use crate::KvError;
 use abi::{command_request::RequestData, *};
+use bytes::Bytes;
 use http::StatusCode;
 use prost::Message;
-use bytes::Bytes;
-use crate::KvError;
 
 impl CommandRequest {
     // 创建HSET命令
@@ -45,8 +45,6 @@ impl Kvpair {
     }
 }
 
-
-
 impl From<String> for Value {
     fn from(s: String) -> Self {
         Self {
@@ -73,14 +71,16 @@ impl From<i64> for Value {
 
 impl From<f64> for Value {
     fn from(f: f64) -> Self {
-        Self { value: Some(value::Value::Float(f)) }
+        Self {
+            value: Some(value::Value::Float(f)),
+        }
     }
 }
 
 impl From<bool> for Value {
     fn from(b: bool) -> Self {
         Self {
-            value: Some(value::Value::Bool(b))
+            value: Some(value::Value::Bool(b)),
         }
     }
 }
@@ -94,8 +94,6 @@ impl From<bool> for Value {
 //         }
 //     }
 // }
-
-
 
 impl From<Value> for CommandResponse {
     fn from(v: Value) -> Self {
@@ -135,7 +133,6 @@ impl From<Vec<Kvpair>> for CommandResponse {
     }
 }
 
-
 impl TryFrom<&[u8]> for Value {
     type Error = KvError;
     fn try_from(data: &[u8]) -> Result<Self, Self::Error> {
@@ -168,7 +165,7 @@ impl TryFrom<Value> for Bytes {
     fn try_from(v: Value) -> Result<Self, Self::Error> {
         match v.value {
             Some(value::Value::Binary(b)) => Ok(b),
-            _ => Err(KvError::ConvertError(v, "Binary"))
+            _ => Err(KvError::ConvertError(v, "Binary")),
         }
     }
 }

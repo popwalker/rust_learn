@@ -1,9 +1,9 @@
-mod pb;
 mod error;
-mod storage;
+mod pb;
 mod service;
+mod storage;
 
-pub use pb::abi::*;
 pub use error::KvError;
-pub use storage::*;
+pub use pb::abi::*;
 pub use service::*;
+pub use storage::*;

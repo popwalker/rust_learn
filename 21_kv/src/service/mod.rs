@@ -2,7 +2,9 @@ use std::sync::Arc;
 
 use tracing::debug;
 
-use crate::{command_request::RequestData, CommandRequest, CommandResponse, KvError, MemTable, Storage};
+use crate::{
+    command_request::RequestData, CommandRequest, CommandResponse, KvError, MemTable, Storage,
+};
 mod command_service;
 
 // 对Command的处理抽象
@@ -12,22 +14,26 @@ pub trait CommandService {
 
 // Service 数据结构
 pub struct Service<Store = MemTable> {
-    inner: Arc<ServiceInner<Store>>
+    inner: Arc<ServiceInner<Store>>,
 }
 
 impl<Store> Clone for Service<Store> {
     fn clone(&self) -> Self {
-        Self { inner: Arc::clone(&self.inner) }
+        Self {
+            inner: Arc::clone(&self.inner),
+        }
     }
 }
 
 pub struct ServiceInner<Store> {
-    store: Store
+    store: Store,
 }
 
 impl<Store: Storage> Service<Store> {
     pub fn new(store: Store) -> Self {
-        Self { inner: Arc::new(ServiceInner{store}) }
+        Self {
+            inner: Arc::new(ServiceInner { store }),
+        }
     }
 
     pub fn execute(&self, cmd: CommandRequest) -> CommandResponse {
@@ -41,14 +47,13 @@ impl<Store: Storage> Service<Store> {
 
 pub fn dispatch(cmd: CommandRequest, store: &impl Storage) -> CommandResponse {
     match cmd.request_data {
-        Some(RequestData::Hget(param)) => param.execute(store), 
-        Some(RequestData::Hgetall(param)) => param.execute(store), 
-        Some(RequestData::Hset(param)) => param.execute(store), 
+        Some(RequestData::Hget(param)) => param.execute(store),
+        Some(RequestData::Hgetall(param)) => param.execute(store),
+        Some(RequestData::Hset(param)) => param.execute(store),
         None => KvError::InvalidCommand("Request as no data".into()).into(),
         _ => KvError::Internal("Not implemented".into()).into(),
     }
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -92,9 +97,9 @@ fn assert_res_ok(mut res: CommandResponse, values: &[Value], pairs: &[Kvpair]) {
 
 // 测试失败返回的结果
 #[cfg(test)]
-pub fn assert_res_error(res: CommandResponse, code: u32, msg: &str) {    
-    assert_eq!(res.status, code);    
-    assert!(res.message.contains(msg));    
-    assert_eq!(res.values, &[]);    
+pub fn assert_res_error(res: CommandResponse, code: u32, msg: &str) {
+    assert_eq!(res.status, code);
+    assert!(res.message.contains(msg));
+    assert_eq!(res.values, &[]);
     assert_eq!(res.pairs, &[]);
 }
