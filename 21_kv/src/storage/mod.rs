@@ -73,6 +73,7 @@ mod tests {
         )
     }
 
+    #[allow(dead_code)]
     fn test_get_iter(store: impl Storage) {
         store.set("t2", "k1".into(), "v1".into()).unwrap();
         store.set("t2", "k2".into(), "v2".into()).unwrap();

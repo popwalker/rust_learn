@@ -1,6 +1,6 @@
 use std::{fs, str::FromStr};
 
-use pyo3::{exceptions, prelude::*, types::{PyDict, PyTuple}};
+use pyo3::{exceptions, prelude::*};
 use xunmi::{self as x};
 
 pub(crate) fn to_pyerr<E: ToString>(err: E) -> PyErr {

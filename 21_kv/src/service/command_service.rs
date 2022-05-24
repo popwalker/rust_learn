@@ -34,8 +34,6 @@ impl CommandService for Hset {
 
 #[cfg(test)]
 mod tests {
-    use std::process::Command;
-
     use super::*;
     use crate::command_request::RequestData;
 

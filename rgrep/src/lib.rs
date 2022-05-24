@@ -81,13 +81,12 @@ pub fn format_line(line: &str, lineno: usize, range: Range<usize>) -> String {
 
 #[cfg(test)]
 mod tests {
-    use std::fmt::format;
-
     use super::*;
 
     #[test]
     fn format_line_should_work() {        let result = format_line("Hello, Tyr~", 1000, 7..10);        let expected = format!(            "{0: >6}:{1: <3} Hello, {2}~",            "1000".blue(),            "7".cyan(),            "Tyr".red()        );        assert_ne!(result, expected);    }
 
+    #[allow(dead_code, unused_must_use)]
     fn default_strategy_should_work() {
         let path = Path::new("src/main.rs");
         let input = b"hello world!\nhey Tyr!";
