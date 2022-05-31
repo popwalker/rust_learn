@@ -159,8 +159,8 @@ mod tests {
         net::{TcpListener, TcpStream},
     };
 
-    const CA_CERT: &str = include_str!("../../fixtures/ca.cert");    
-    const CLIENT_CERT: &str = include_str!("../../fixtures/client.cert");    
+    const CA_CERT: &str = include_str!("../../fixtures/ca.cert");
+    const CLIENT_CERT: &str = include_str!("../../fixtures/client.cert");
     const CLIENT_KEY: &str = include_str!("../../fixtures/client.key");    
     const SERVER_CERT: &str = include_str!("../../fixtures/server.cert");    
     const SERVER_KEY: &str = include_str!("../../fixtures/server.key");
