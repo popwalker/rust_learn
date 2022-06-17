@@ -1,0 +1,56 @@
+[package]
+name = "kv6"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[[bin]]
+name = "kvs"
+path = "src/server.rs"
+
+[[bin]]
+name = "kvc"
+path = "src/client.rs"
+
+[dependencies]
+anyhow = "1" # 错误处理
+bytes = "1" # 高效处理网络buffer的库
+dashmap = "4" # 并发HashMap
+flate2 = "1" #gzip压缩
+http =  "0.2" # 我们使用HTTP status code，所以引入这个类型库
+prost = "0.8" # 处理protobuf代码
+sled = "0.34" #sled db
+thiserror = "1" # 错误定义和处理
+tokio = {version = "1", features = ["full"]}
+tracing = "0.1" #日志处理
+
+tokio-rustls = "0.22"
+tokio-stream = {version="0.1", features = ["sync"]} # 处理stream
+tokio-util = {version = "0.6", features = ["compat"]} # tokio 和futures的兼容性库
+rustls-native-certs = "0.5.0"
+futures = "0.3"
+yamux = "0.9"
+serde = {version = "1", features = ["derive"]}
+toml = "0.5"
+opentelemetry-jaeger = "0.15" # opentelemetry jaeger 支持
+tracing-appender = "0.1" # 文件日志
+tracing-opentelemetry = "0.15" # opentelemetry 支持
+tracing-subscriber = {version = "0.2", features = ["json", "chrono"]} # 日志处理
+
+
+[dev-dependencies]
+async-prost = "0.2.1" # 支持把protobuf封装成TCP frame
+futures = "0.3" # 提供Steam trait
+tempfile = "3" # 处理临时目录和临时文件
+tokio-util = { version = "0.6", features = ["codec"]}
+certify = "0.3"
+criterion = {version = "0.3", features = ["async_futures", "async_tokio", "html_reports"]} # benchmark
+rand = "0.8" #随机数处理
+
+[build-dependencies]
+prost-build = "0.8" # 编译protobuf
+
+[[bench]]
+name = "pubsub"
+harness = false
