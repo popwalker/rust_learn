@@ -6,3 +6,11 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+anyhow = "1"
+askama = "0.11" # 处理jinjia模板，模板需要放在和src平行的templates目录下
+proc-macro2 = "1"
+quote = "1"
+syn = {version = "1", features = ["extra-traits"]}
+darling = "0.13"
+[lib]
+proc-macro = true
